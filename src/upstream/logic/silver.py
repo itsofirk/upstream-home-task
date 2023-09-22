@@ -3,8 +3,7 @@ silver stage logic
 """
 import numpy as np
 import pandas as pd
-import pyarrow as pa
-from pyarrow import parquet as pq
+from upstream import datalake
 
 GEAR_POSITION_MAPPING = {'NEUTRAL': 0, 'REVERSE': -1, None: np.nan,
                          '-1': -1, '0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6}
@@ -36,10 +35,6 @@ def standardize_gear_position(df: pd.DataFrame, gear_mapping) -> pd.DataFrame:
     """
     df['gearPosition'] = df.gearPoistion.map(gear_mapping)
     return df
-
-
-def export_parquet(df: pd.DataFrame, path: str) -> None:
-    ...
 
 
 def silver(bronze_dir: str, silver_dir: str) -> None:
