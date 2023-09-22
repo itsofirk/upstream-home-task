@@ -15,17 +15,23 @@ def load_bronze(path: str) -> pd.DataFrame:
     return pd.read_parquet(path)
 
 
-def clean_data(df: pd.DataFrame) -> pd.DataFrame:
-    df = filter_null_vins(df)
+def clean_data(df: pd.DataFrame, null_filtering_columns) -> pd.DataFrame:
+    df = filter_null_values(df, null_filtering_columns)
     df = remove_rows_with_bad_manufacturer(df)
     return df
 
 
-def filter_null_vins(df):
-    return df.dropna(subset='vin')
+def filter_null_values(df, columns):
+    """
+    Remove rows from the dataframe that have a null value for the 'vin' column.
+    """
+    return df.dropna(subset=columns)
 
 
 def remove_rows_with_bad_manufacturer(df):
+    """
+    Remove rows from the dataframe that have a manufacturer with leading or trailing whitespace.
+    """
     return df[df.manufacturer.str.strip() == df.manufacturer]
 
 
@@ -39,14 +45,27 @@ def standardize_gear_position(df: pd.DataFrame, gear_mapping) -> pd.DataFrame:
     return df
 
 
-def silver(bronze_dir: str, silver_dir: str) -> None:
+def silver(bronze_dir: str, silver_dir: str, null_filtering_columns=None, gear_position_mapping=None):
+    """
+    The silver function takes the bronze data and cleans it up.
+
+    :param bronze_dir: Specify the directory of the bronze data
+    :param silver_dir: Specify the directory where the silver data will be stored
+    :param null_filtering_columns: Optional. Specify columns to filter out null values from
+    :param gear_position_mapping: Optional. Map the gear position to a standard value
+    """
+    if null_filtering_columns is None:
+        null_filtering_columns = []
+    if gear_position_mapping is None:
+        gear_position_mapping = GEAR_POSITION_MAPPING
+
     logger.info("Starting the bronze stage...")
     logger.debug("Loading bronze data...")
     bronze = load_bronze(bronze_dir)
     logger.debug("Cleaning and Filtering bronze data...")
-    df = clean_data(bronze)
+    df = clean_data(bronze, null_filtering_columns)
     logger.debug("Standardizing gear position...")
-    df = standardize_gear_position(df, GEAR_POSITION_MAPPING)
+    df = standardize_gear_position(df, gear_position_mapping)
     logger.debug("Exporting data to silver_dir...")
     datalake.export_parquet(df, silver_dir, partition_cols=['date', 'hour'])
     # Todo: notify that job is done
