@@ -20,11 +20,8 @@ def generate_vin_last_state_report(silver_data: pd.DataFrame):
     Generate a report on the last state of each vehicle with the following columns:
     timestamp, front_left_door_state, wipers_state
     """
-    return silver_data.groupby('vin').agg({
-        'timestamp': 'max',
-        'frontLeftDoorState': 'last',
-        'wipersState': 'last'
-    }).reset_index()
+    vin_last_timestamp_rows = silver_data.groupby('vin')['timestamp'].idxmax()
+    return silver_data.loc[vin_last_timestamp_rows, ['vin', 'timestamp', 'frontLeftDoorState', 'wipersState']].reset_index(drop=True)
 
 
 def generate_top_10_fastest_vehicles_report(silver_data):
