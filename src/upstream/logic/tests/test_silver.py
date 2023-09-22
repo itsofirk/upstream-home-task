@@ -18,7 +18,7 @@ class TestCleanData(unittest.TestCase):
             'vin': ['1', '2'],
             'manufacturer': ['A', 'B']
         })
-        output = silver.clean_data(df)
+        output = silver.clean_data(df, null_filtering_columns=['vin'])
         assert_frame_equal(expected, output)
 
 
