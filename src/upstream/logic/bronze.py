@@ -7,9 +7,9 @@ import pandas as pd
 import requests
 import pyarrow as pa
 from pyarrow import parquet as pq
-from datetime import datetime
 
-from upstream.common.exceptions import ApiError
+from upstream import datalake
+from upstream.common.exceptions import ApiError, DataLakeError
 
 logger = logging.getLogger(__name__)
 
@@ -63,6 +63,8 @@ def export_parquet(df, bronze_dir):
     """
     logger.info("Exporting table to bronze_dir...")
     table = pa.Table.from_pandas(df)
+    if not datalake.is_empty(bronze_dir):
+        raise DataLakeError("Provided directory is not empty.")
     pq.write_to_dataset(table, root_path=bronze_dir, partition_cols=['date', 'hour'])
 
 
