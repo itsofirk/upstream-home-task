@@ -35,7 +35,7 @@ def standardize_gear_position(df: pd.DataFrame, gear_mapping) -> pd.DataFrame:
     integers.
     If a value is not found in the gear_mapping, it will be mapped to NaN.
     """
-    df['gearPosition'] = df.gearPosition.map(gear_mapping)
+    df['gearPosition'] = df.gearPosition.map(gear_mapping).astype('Int64')
     return df
 
 
@@ -48,6 +48,6 @@ def silver(bronze_dir: str, silver_dir: str) -> None:
     logger.debug("Standardizing gear position...")
     df = standardize_gear_position(df, GEAR_POSITION_MAPPING)
     logger.debug("Exporting data to silver_dir...")
-    datalake.export_parquet(df, silver_dir)
+    datalake.export_parquet(df, silver_dir, partition_cols=['date', 'hour'])
     # Todo: notify that job is done
     logger.info("Silver stage complete.")
