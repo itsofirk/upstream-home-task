@@ -36,8 +36,21 @@ def set_up_local_data_lake(root_path, bronze='bronze', silver='silver', gold='go
 
 def is_empty(directory):
     """
-    Check if a directory has any children.
-    Returns True if the path does not exist.
+    Checks if a directory is empty.
     """
-    return not os.path.exists(directory) or not os.listdir(directory)
+    return not path_exists(directory) or not list_dir(directory)
+
+
+def list_dir(directory):
+    """
+    Takes a directory path and returns the list of files in that directory.
+    """
+    return os.listdir(directory)
+
+
+def path_exists(path):
+    """
+    Takes a directory path and returns True if path refers to an existing path, False otherwise.
+    """
+    return os.path.exists(path)
 
