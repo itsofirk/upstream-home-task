@@ -28,13 +28,13 @@ def set_up_local_data_lake(root_path, bronze='bronze', silver='silver', gold='go
 
     logger.debug("Creating nested data folders")
     for data_dir in [bronze, silver, gold]:
-        if not _is_empty(root_folder / data_dir):
+        if not is_empty(root_folder / data_dir):
             raise FilesystemError(f"expected {data_dir} to be empty")
         (root_folder / data_dir).mkdir(exist_ok=True)
     logger.info("Data Lake directories created.")
 
 
-def _is_empty(directory):
+def is_empty(directory):
     """
     Check if a directory has any children.
     Returns True if the path does not exist.
