@@ -34,21 +34,21 @@ class TestTop10Fastest(unittest.TestCase):
         rows: The first five should be all the rows from the different hour, and the last 10 should be the last 15
         rows from the same hour
         """
-        same_hour_vins = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
-        next_hour_vins = ['A', 'B', 'C', 'D', 'E']
-        same_hour_velocities = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
-        next_hour_velocities = [160, 170, 180, 190, 200]
         df = pd.DataFrame({
             'date': ['same-date'] * 20,
             'hour': ['same-hour'] * 15 + ['different-hour'] * 5,
-            'vin': same_hour_vins + next_hour_vins,
-            'velocity': same_hour_velocities + next_hour_velocities
+            'vin': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+                    'A', 'B', 'C', 'D', 'E'],
+            'velocity': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150,
+                         160, 170, 180, 190, 200]
         })
         expected = pd.DataFrame({
             'date': ['same-date'] * 15,
             'hour': ['different-hour'] * 5 + ['same-hour'] * 10,
-            'vin': next_hour_vins[::-1] + same_hour_vins[5:][::-1],
-            'velocity': next_hour_velocities[::-1] + same_hour_velocities[5:][::-1]
+            'vin': ['E', 'D', 'C', 'B', 'A',
+                    'O', 'N', 'M', 'L', 'K', 'J', 'I', 'H', 'G', 'F'],
+            'velocity': [200, 190, 180, 170, 160,
+                         150, 140, 130, 120, 110, 100, 90, 80, 70, 60]
         })
 
         output = gold.generate_top_10_fastest_vehicles_report(df)
