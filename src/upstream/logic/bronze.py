@@ -47,6 +47,8 @@ def parse_messages(messages: list[dict], timestamp_unit='ms') -> pd.DataFrame:
     """
     df = pd.DataFrame(messages)
     df['timestamp'] = pd.to_datetime(df.timestamp, unit=timestamp_unit)
+    df['date'] = df.timestamp.dt.date
+    df['hour'] = df.timestamp.dt.hour
     return df
 
 
