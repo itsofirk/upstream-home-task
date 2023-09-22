@@ -5,6 +5,7 @@ Set up the filesystem and create the necessary directories that would act as the
 import os
 import logging
 from pathlib import Path
+from pyarrow import Table, parquet as pq
 
 from upstream.common.exceptions import DataLakeError
 
@@ -54,3 +55,19 @@ def path_exists(path):
     """
     return os.path.exists(path)
 
+
+def export_parquet(df, path, partition_cols=None):
+    """
+    export_parquet takes a dataframe and writes it to the bronze directory as parquet files partitioned by date and
+    hour extracted from the timestamp column.
+
+    :param df: The dataframe to be exported
+    :param path: Specify the directory where the parquet file will be stored
+    :param partition_cols: Specify the column names by which to partition the dataset
+    :return: The directory path to export the parquet files onto.
+    """
+    logger.info("Exporting table to path...")
+    table = Table.from_pandas(df)
+    if not is_empty(path):
+        raise DataLakeError("Provided directory is not empty.")
+    pq.write_to_dataset(table, root_path=path, partition_cols=partition_cols)
