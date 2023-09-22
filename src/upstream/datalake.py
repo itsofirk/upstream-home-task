@@ -5,6 +5,8 @@ Set up the filesystem and create the necessary directories that would act as the
 import os
 import logging
 from pathlib import Path
+
+import pandas as pd
 from pyarrow import Table, parquet as pq
 
 from upstream.common.exceptions import DataLakeError
@@ -54,6 +56,13 @@ def path_exists(path):
     Takes a directory path and returns True if path refers to an existing path, False otherwise.
     """
     return os.path.exists(path)
+
+
+def load_parquet(path: str) -> pd.DataFrame:
+    """
+    load_parquet loads a parquet file(/directory) from the specified path and returns it as a pandas DataFrame.
+    """
+    return pd.read_parquet(path)
 
 
 def export_parquet(df, path, partition_cols=None):

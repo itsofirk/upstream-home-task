@@ -52,22 +52,6 @@ def parse_messages(messages: list[dict], timestamp_unit='ms') -> pd.DataFrame:
     return df
 
 
-def export_parquet(df, bronze_dir):
-    """
-    export_parquet takes a dataframe and writes it to the bronze directory as parquet files partitioned by date and
-    hour extracted from the timestamp column.
-
-    :param df: The dataframe to be exported
-    :param bronze_dir: Specify the directory where the parquet file will be stored
-    :return: The directory path to export the parquet files onto.
-    """
-    logger.info("Exporting table to bronze_dir...")
-    table = pa.Table.from_pandas(df)
-    if not datalake.is_empty(bronze_dir):
-        raise DataLakeError("Provided directory is not empty.")
-    pq.write_to_dataset(table, root_path=bronze_dir, partition_cols=['date', 'hour'])
-
-
 def bronze(upstream_url, bronze_dir, messages_count=10_000):
     """
     The bronze function takes an upstream URL, a bronze directory, and a messages count.
@@ -84,6 +68,6 @@ def bronze(upstream_url, bronze_dir, messages_count=10_000):
     logger.debug("Parsing messages...")
     df = parse_messages(messages)
     logger.debug("Exporting data to bronze_dir...")
-    export_parquet(df, bronze_dir)
+    datalake.export_parquet(df, bronze_dir, partition_cols=['date', 'hour'])
     # Todo: notify that job is done
     logger.info("Bronze stage complete.")

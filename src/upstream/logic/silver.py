@@ -11,8 +11,9 @@ GEAR_POSITION_MAPPING = {'NEUTRAL': 0, 'REVERSE': -1, None: np.nan,
                          '-1': -1, '0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6}
 
 
-def load_bronze(path: str) -> pd.DataFrame:
-    return pd.read_parquet(path)
+def load_bronze(bronze_dir: str) -> pd.DataFrame:
+    logger.debug(f"Loading bronze data from {bronze_dir}")
+    return datalake.load_parquet(bronze_dir)
 
 
 def clean_data(df: pd.DataFrame, null_filtering_columns) -> pd.DataFrame:
