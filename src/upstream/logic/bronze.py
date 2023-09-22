@@ -2,6 +2,8 @@
 bronze stage logic
 """
 import logging
+
+import pandas as pd
 import requests
 import pandas
 from pyarrow import parquet as pq
@@ -35,8 +37,17 @@ def get_messages(url, amount) -> list[dict]:
         raise ApiError(e.args[0])
 
 
-def parse_messages(messages):
-    ...
+def parse_messages(messages: list[dict], timestamp_unit='ms') -> pd.DataFrame:
+    """
+    parse_messages takes a list of messages and returns a pandas DataFrame.
+
+    :param messages: list[dict]: Pass the list of messages
+    :param timestamp_unit: Specify the unit of time that is used in the timestamp
+    :return: A messages DataFrame
+    """
+    df = pd.DataFrame(messages)
+    df['timestamp'] = pd.to_datetime(df.timestamp, unit=timestamp_unit)
+    return df
 
 
 def export_parquet(df, bronze_dir):
