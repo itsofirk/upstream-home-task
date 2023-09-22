@@ -35,7 +35,7 @@ def standardize_gear_position(df: pd.DataFrame, gear_mapping) -> pd.DataFrame:
     integers.
     If a value is not found in the gear_mapping, it will be mapped to NaN.
     """
-    df['gearPosition'] = df.gearPoistion.map(gear_mapping)
+    df['gearPosition'] = df.gearPosition.map(gear_mapping)
     return df
 
 
