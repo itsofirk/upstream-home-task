@@ -2,5 +2,9 @@ class UpstreamError(Exception):
     pass
 
 
-class FilesystemError(UpstreamError):
+class DataLakeError(UpstreamError):
+    pass
+
+
+class ApiError(UpstreamError):
     pass
