@@ -4,3 +4,7 @@ class UpstreamError(Exception):
 
 class FilesystemError(UpstreamError):
     pass
+
+
+class ApiError(UpstreamError):
+    pass
