@@ -1,0 +1,3 @@
+"""
+gold stage logic
+"""

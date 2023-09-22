@@ -1,0 +1,3 @@
+"""
+silver stage logic
+"""
