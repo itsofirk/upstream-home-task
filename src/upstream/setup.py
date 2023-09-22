@@ -12,6 +12,11 @@ logger = logging.getLogger(__name__)
 
 
 def set_up_local_data_lake(root_path, bronze='bronze', silver='silver', gold='gold'):
+    """
+    Create the directories for the local data lake.
+    This function creates the following directory structure under the specified root directory
+    ...root_path/ { bronze/, silver/, gold/ }
+    """
     logger.info("Set up environment...")
 
     root_folder = Path(root_path)
@@ -33,8 +38,6 @@ def _is_empty(directory):
     """
     Check if a directory has any children.
     Returns True if the path does not exist.
-    :param directory: a directory path to check
-    :return: True if empty, False otherwise.
     """
     return not os.path.exists(directory) or not os.listdir(directory)
 
