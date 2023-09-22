@@ -60,7 +60,7 @@ def silver(bronze_dir: str, silver_dir: str, null_filtering_columns=None, gear_p
     if gear_position_mapping is None:
         gear_position_mapping = GEAR_POSITION_MAPPING
 
-    logger.info("Starting the bronze stage...")
+    logger.info("Starting the silver stage...")
     logger.debug("Loading bronze data...")
     bronze = load_bronze(bronze_dir)
     logger.debug("Cleaning and Filtering bronze data...")
