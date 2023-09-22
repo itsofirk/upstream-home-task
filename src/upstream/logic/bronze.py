@@ -1,15 +1,30 @@
 """
 bronze stage logic
 """
-
+import logging
 import requests
 import pandas
 from pyarrow import parquet as pq
 from datetime import datetime
 
+from upstream.common.exceptions import ApiError
+
+logger = logging.getLogger(__name__)
+
 
 def get_messages(url, amount):
-    ...
+    logger.info(f"Fetching {amount:,} messages...")
+    resp = requests.get(url, params={'amount': amount})
+
+    if resp.status_code != requests.codes.ok:
+        logger.error("Failed to fetch messages.")
+        raise ApiError(resp.text)
+
+    try:
+        return resp.json()
+    except requests.exceptions.JSONDecodeError as e:
+        logger.error("Failed to parse API response.")
+        raise ApiError(e.args[0])
 
 
 def parse_messages(messages):
