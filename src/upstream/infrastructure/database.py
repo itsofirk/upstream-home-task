@@ -12,7 +12,7 @@ class Database:
     def __init__(self, app_data_dir, file_name=SQLITE_FILENAME):
         self.db_path = os.path.join(app_data_dir, file_name)
         logger.info("Setting up database...")
-
+        os.makedirs(app_data_dir, exist_ok=True)
         with Database.connection(self.db_path) as con:
             logger.debug("Creating file_monitoring table...")
             con.execute(SQL.CREATE_FILE_MONITORING_TABLE)
