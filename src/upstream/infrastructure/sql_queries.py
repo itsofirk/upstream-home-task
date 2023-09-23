@@ -15,6 +15,9 @@ CREATE TABLE IF NOT EXISTS stage_execution (
 );"""
 
 
+INSERT_NEW_FILE = "INSERT INTO file_monitoring (stage, src_path, timestamp) VALUES (?, ?, ?)"
+
+
 START_NEW_JOB = """
 INSERT INTO stage_execution (stage_name, start_time) VALUES (?, ?)
 RETURNING id;
