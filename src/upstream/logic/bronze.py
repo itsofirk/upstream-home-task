@@ -5,11 +5,9 @@ import logging
 
 import pandas as pd
 import requests
-import pyarrow as pa
-from pyarrow import parquet as pq
 
-from upstream import datalake
-from upstream.common.exceptions import ApiError, DataLakeError
+from upstream.infrastructure import datalake
+from upstream.common.exceptions import ApiError
 
 logger = logging.getLogger(__name__)
 

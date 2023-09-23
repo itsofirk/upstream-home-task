@@ -4,7 +4,7 @@ silver stage logic
 import logging
 import numpy as np
 import pandas as pd
-from upstream import datalake
+from upstream.infrastructure import datalake
 
 logger = logging.getLogger(__name__)
 GEAR_POSITION_MAPPING = {'NEUTRAL': 0, 'REVERSE': -1, None: np.nan,

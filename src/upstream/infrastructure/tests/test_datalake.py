@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pandas as pd
 import pyarrow as pa
 
-from upstream import datalake
+from upstream.infrastructure import datalake
 from upstream.common.exceptions import DataLakeError
 
 
