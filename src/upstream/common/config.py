@@ -8,6 +8,10 @@ config = ConfigParser()
 config.read(args.config)
 
 
+class AppConfig:
+    app_name = config.get('general', 'app_name')
+
+
 class InfraConfig:
     host = config.get('infrastructure', 'redis_host')
     port = config.getint('infrastructure', 'redis_port')
