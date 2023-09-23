@@ -9,12 +9,12 @@ logger = logging.getLogger(__name__)
 
 
 class FileWatcher:
-    def __init__(self, data_lake_root, bronze, silver):
-        silver_event_handler = ParquetFileHandler(bronze)
-        gold_event_handler = ParquetFileHandler(silver)
+    def __init__(self, data_lake_root, bronze_path, silver_path):
+        silver_event_handler = ParquetFileHandler(bronze_path)
+        gold_event_handler = ParquetFileHandler(silver_path)
 
-        bronze_dir = os.path.join(data_lake_root, bronze)
-        silver_dir = os.path.join(data_lake_root, silver)
+        bronze_dir = os.path.join(data_lake_root, bronze_path)
+        silver_dir = os.path.join(data_lake_root, silver_path)
 
         self.observer = Observer()
         self.observer.schedule(silver_event_handler, path=bronze_dir, recursive=True)

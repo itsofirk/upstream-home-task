@@ -1,6 +1,7 @@
 """
 A centralized module for parsing, validating and providing the necessary configurations
 """
+import os
 from configparser import ConfigParser
 from upstream import args
 
@@ -30,6 +31,18 @@ class UpstreamConfig:
 
 class DatalakeConfig:
     root_path = config.get('datalake', 'data_root')
-    bronze = config.get('datalake', 'bronze')
-    silver = config.get('datalake', 'silver')
-    gold = config.get('datalake', 'gold')
+    bronze_dir = config.get('datalake', 'bronze')
+    silver_dir = config.get('datalake', 'silver')
+    gold_dir = config.get('datalake', 'gold')
+
+    @classmethod
+    def bronze_path(cls):
+        return os.path.join(cls.root_path, cls.bronze_dir)
+
+    @classmethod
+    def silver_path(cls):
+        return os.path.join(cls.root_path, cls.silver_dir)
+
+    @classmethod
+    def gold_path(cls):
+        return os.path.join(cls.root_path, cls.gold_dir)
