@@ -28,7 +28,7 @@ class UpstreamConfig:
 
 
 class DatalakeConfig:
-    root_path = config.get('datalake', 'root_path')
+    root_path = config.get('datalake', 'data_root')
     bronze = config.get('datalake', 'bronze')
     silver = config.get('datalake', 'silver')
     gold = config.get('datalake', 'gold')
