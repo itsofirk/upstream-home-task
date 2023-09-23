@@ -78,7 +78,7 @@ def export_parquet(df, path, partition_cols=None):
     logger.info("Exporting table to path...")
     table = Table.from_pandas(df)
     if not is_empty(path):
-        raise DataLakeError("Provided directory is not empty.")
+        logger.warning("Provided directory is not empty.")
     pq.write_to_dataset(table, root_path=path, partition_cols=partition_cols)
 
 
