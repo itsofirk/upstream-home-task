@@ -68,8 +68,7 @@ def load_parquet(path: str) -> pd.DataFrame:
 def export_parquet(df, path, partition_cols=None):
     """
     export_parquet takes a dataframe and writes it to the bronze directory as parquet files partitioned by date and
-    hour extracted from the timestamp column.
-
+    hour extracted from the timestamp column
     :param df: The dataframe to be exported
     :param path: Specify the directory where the parquet file will be stored
     :param partition_cols: Specify the column names by which to partition the dataset
