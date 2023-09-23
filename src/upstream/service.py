@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class Service:
-    def __init__(self, stage, stage_process, sleep_time=2, *):
+    def __init__(self, stage, stage_process, sleep_time=2):
         self.stage = stage
         self.stage_process = stage_process
         self.sleep_time = sleep_time
