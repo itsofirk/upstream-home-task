@@ -33,7 +33,7 @@ def set_up_local_data_lake(root_path, bronze='bronze', silver='silver', gold='go
     logger.debug("Creating nested data folders")
     for data_dir in [bronze, silver, gold]:
         if not is_empty(root_folder / data_dir):
-            raise DataLakeError(f"expected {data_dir} to be empty")
+            logger.warning(f"expected {data_dir} to be empty")
         (root_folder / data_dir).mkdir(exist_ok=True)
     logger.info("Data Lake directories created.")
 
@@ -78,7 +78,7 @@ def export_parquet(df, path, partition_cols=None):
     logger.info("Exporting table to path...")
     table = Table.from_pandas(df)
     if not is_empty(path):
-        raise DataLakeError("Provided directory is not empty.")
+        logger.warning("Provided directory is not empty.")
     pq.write_to_dataset(table, root_path=path, partition_cols=partition_cols)
 
 

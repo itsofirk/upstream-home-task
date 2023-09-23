@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 from pandas.testing import assert_frame_equal
-from upstream.logic import gold
+from upstream.logic.gold import generate_top_10_fastest_vehicles_report, generate_vin_last_state_report
 
 
 class TestVinReport(unittest.TestCase):
@@ -21,7 +21,7 @@ class TestVinReport(unittest.TestCase):
             'wipersState': [False, True]
         })
 
-        output = gold.generate_vin_last_state_report(df)
+        output = generate_vin_last_state_report(df)
         assert_frame_equal(expected, output)
 
 
@@ -51,7 +51,7 @@ class TestTop10Fastest(unittest.TestCase):
                          150, 140, 130, 120, 110, 100, 90, 80, 70, 60]
         })
 
-        output = gold.generate_top_10_fastest_vehicles_report(df)
+        output = generate_top_10_fastest_vehicles_report(df)
         assert_frame_equal(expected, output)
 
 

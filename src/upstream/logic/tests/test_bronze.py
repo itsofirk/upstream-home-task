@@ -1,10 +1,12 @@
 import unittest
 from unittest.mock import Mock, patch
 
+import pandas as pd
+from pandas.testing import assert_frame_equal
 import requests.models
 
 from upstream.common.exceptions import ApiError
-from upstream.logic import bronze
+from upstream.logic.bronze import get_messages, parse_messages
 
 
 class TestGetMessages(unittest.TestCase):
@@ -26,7 +28,7 @@ class TestGetMessages(unittest.TestCase):
         url = 'http://example.com'
         amount = 10
 
-        result = bronze.get_messages(url, amount)
+        result = get_messages(url, amount)
         self.assertEqual(result, [{'id': 1, 'data': 'example_data'}])
         mock_get.assert_called_once_with(url, params={'amount': amount})
 
@@ -44,7 +46,7 @@ class TestGetMessages(unittest.TestCase):
         amount = 10
 
         with self.assertRaises(ApiError):
-            bronze.get_messages(url, amount)
+            get_messages(url, amount)
 
     @patch('requests.get')
     def test_bad_response(self, mock_get):
@@ -66,7 +68,26 @@ class TestGetMessages(unittest.TestCase):
         amount = 10
 
         with self.assertRaises(ApiError):
-            bronze.get_messages(url, amount)
+            get_messages(url, amount)
+
+
+class TestParseMessages(unittest.TestCase):
+    def test_parse_messages(self):
+        messages = [
+            {'timestamp': 1631234567890, 'data': 'message 1'},
+            {'timestamp': 1631234567900, 'data': 'message 2'},
+            {'timestamp': 1631234567910, 'data': 'message 3'}
+        ]
+        
+        expected_result = pd.DataFrame({
+            'timestamp': pd.to_datetime([1631234567890, 1631234567900, 1631234567910], unit='ms'),
+            'data': ['message 1', 'message 2', 'message 3'],
+            'date': [pd.Timestamp('2021-09-10').date(), pd.Timestamp('2021-09-10').date(), pd.Timestamp('2021-09-10').date()],
+            'hour': [0, 0, 0]
+        })
+        
+        result = parse_messages(messages)
+        assert_frame_equal(result, expected_result, check_dtype=False)
 
 
 if __name__ == '__main__':

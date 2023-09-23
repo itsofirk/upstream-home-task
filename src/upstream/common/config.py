@@ -3,25 +3,16 @@ A centralized module for parsing, validating and providing the necessary configu
 """
 import os
 from configparser import ConfigParser
-from upstream import args
 
 config = ConfigParser()
-config.read(args.config)
+config_path = os.getenv('UPSTREAM_CONFIG')
+if not config_path or not os.path.exists(config_path):
+    raise ValueError('UPSTREAM_CONFIG is not set or does not exist')
+config.read(config_path)
 
 
 class AppConfig:
     app_name = config.get('general', 'app_name')
-
-
-class InfraConfig:
-    host = config.get('infrastructure', 'redis_host')
-    port = config.getint('infrastructure', 'redis_port')
-    db = config.getint('infrastructure', 'redis_db')
-    app_data_dir = config.get('infrastructure', 'app_data_dir')
-
-    @classmethod
-    def get_redis_broker(cls):
-        return f'redis://{cls.host}:{cls.port}/{cls.db}'
 
 
 class UpstreamConfig:
