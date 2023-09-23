@@ -11,9 +11,11 @@ logger = logging.getLogger(__name__)
 
 
 class Service:
-    def __init__(self, stage, stage_process, sleep_time=2):
+    def __init__(self, stage, stage_process, sleep_time=2, *stage_process_args, **stage_process_kwargs):
         self.stage = stage
         self.stage_process = stage_process
+        self.stage_process_args = stage_process_args
+        self.stage_process_kwargs = stage_process_kwargs
         self.sleep_time = sleep_time
 
     def main_loop(self):
@@ -32,7 +34,7 @@ class Service:
     def run_target(self):
         logger.info("Starting new job...")
         job_id = self.start_new_job(self.stage)
-        self.stage_process()
+        self.stage_process(*self.stage_process_args, **self.stage_process_kwargs)
         self.end_job(job_id)
         logger.info("Job finished.")
 
