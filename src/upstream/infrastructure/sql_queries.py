@@ -1,8 +1,8 @@
 CREATE_FILE_MONITORING_TABLE = """
 CREATE TABLE IF NOT EXISTS file_monitoring (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    source VARCHAR(255) NOT NULL,
-    file_name VARCHAR(255) NOT NULL,
+    stage VARCHAR(255) NOT NULL,
+    src_path VARCHAR(255) NOT NULL,
     timestamp DATETIME NOT NULL
 );"""
 

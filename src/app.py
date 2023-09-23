@@ -1,7 +1,7 @@
 import logging
+
 from upstream.common.config import InfraConfig, AppConfig, UpstreamConfig, DatalakeConfig
-from upstream.infrastructure.datalake import set_up_local_data_lake
-from upstream.infrastructure.db import set_up_app_db
+from upstream.infrastructure import set_up_local_data_lake, set_up_app_db
 from upstream.filewatcher import FileWatcher
 
 logger = logging.getLogger(AppConfig.app_name)
