@@ -9,7 +9,7 @@ from upstream.logic import bronze, silver, gold
 logger = logging.getLogger(AppConfig.app_name)
 
 app = Flask(AppConfig.app_name)
-file_watcher = FileWatcher(DatalakeConfig.root_path, DatalakeConfig.bronze_path(), DatalakeConfig.silver_path())
+file_watcher = FileWatcher(DatalakeConfig.bronze_name, DatalakeConfig.bronze_path(), DatalakeConfig.silver_name, DatalakeConfig.silver_path())
 
 
 @app.route('/process')
