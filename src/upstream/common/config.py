@@ -5,9 +5,10 @@ import os
 from configparser import ConfigParser
 
 config = ConfigParser()
-if not os.getenv('UPSTREAM_CONFIG'):
-    raise ValueError('UPSTREAM_CONFIG is not set')
-config.read(os.getenv('UPSTREAM_CONFIG'))
+config_path = os.getenv('UPSTREAM_CONFIG')
+if not config_path or not os.path.exists(config_path):
+    raise ValueError('UPSTREAM_CONFIG is not set or does not exist')
+config.read(config_path)
 
 
 class AppConfig:
