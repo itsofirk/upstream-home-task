@@ -6,7 +6,7 @@ import os.path
 
 import pandas as pd
 
-from upstream import datalake
+from upstream.infrastructure import datalake
 
 logger = logging.getLogger(__name__)
 

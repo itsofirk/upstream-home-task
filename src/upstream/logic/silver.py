@@ -4,7 +4,7 @@ silver stage logic
 import logging
 import numpy as np
 import pandas as pd
-from upstream import datalake
+from upstream.infrastructure import datalake
 
 logger = logging.getLogger(__name__)
 GEAR_POSITION_MAPPING = {'NEUTRAL': 0, 'REVERSE': -1, None: np.nan,
@@ -48,8 +48,7 @@ def standardize_gear_position(df: pd.DataFrame, gear_mapping) -> pd.DataFrame:
 
 def silver(bronze_dir: str, silver_dir: str, null_filtering_columns=None, gear_position_mapping=None):
     """
-    The silver function takes the bronze data and cleans it up.
-
+    The silver function takes the bronze data and cleans it up
     :param bronze_dir: Specify the directory of the bronze data
     :param silver_dir: Specify the directory where the silver data will be stored
     :param null_filtering_columns: Optional. Specify columns to filter out null values from

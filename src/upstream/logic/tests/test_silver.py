@@ -2,7 +2,7 @@ import unittest
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
-from upstream.logic import silver
+from upstream.logic.silver import clean_data, standardize_gear_position
 
 
 class TestCleanData(unittest.TestCase):
@@ -18,7 +18,7 @@ class TestCleanData(unittest.TestCase):
             'vin': ['1', '2'],
             'manufacturer': ['A', 'B']
         })
-        output = silver.clean_data(df, null_filtering_columns=['vin'])
+        output = clean_data(df, null_filtering_columns=['vin'])
         assert_frame_equal(expected, output)
 
 
@@ -34,7 +34,7 @@ class TestStandardizeGearPosition(unittest.TestCase):
             None: pd.NA,
             'REVERSE': -1
         }
-        output = silver.standardize_gear_position(df, gear_mapping)
+        output = standardize_gear_position(df, gear_mapping)
         assert_frame_equal(expected, output)
 
 
