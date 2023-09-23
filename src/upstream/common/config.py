@@ -3,10 +3,11 @@ A centralized module for parsing, validating and providing the necessary configu
 """
 import os
 from configparser import ConfigParser
-from upstream import args
 
 config = ConfigParser()
-config.read(args.config)
+if not os.getenv('UPSTREAM_CONFIG'):
+    raise ValueError('UPSTREAM_CONFIG is not set')
+config.read(os.getenv('UPSTREAM_CONFIG'))
 
 
 class AppConfig:
