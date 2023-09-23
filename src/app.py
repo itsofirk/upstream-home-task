@@ -21,7 +21,7 @@ def run_process():
     silver(DatalakeConfig.bronze_path(), DatalakeConfig.silver_path(), )
     logger.debug("Running gold...")
     gold(DatalakeConfig.silver_path(), DatalakeConfig.gold_path())
-    return jsonify("process done", status=200, mimetype='application/json')
+    return jsonify(response="Done!", status=200, mimetype='application/json')
 
 
 if __name__ == '__main__':
