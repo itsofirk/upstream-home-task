@@ -5,19 +5,16 @@ import logging
 
 import pandas as pd
 import requests
-import pyarrow as pa
-from pyarrow import parquet as pq
 
-from upstream import datalake
-from upstream.common.exceptions import ApiError, DataLakeError
+from upstream.infrastructure import datalake
+from upstream.common.exceptions import ApiError
 
 logger = logging.getLogger(__name__)
 
 
 def get_messages(url, amount) -> list[dict]:
     """
-    get_messages fetches a list of messages from the API.
-
+    get_messages fetches a list of messages from the API
     :param url: Specify the url of the api endpoint
     :param amount: Specify how many messages to fetch
     :return: A list of messages

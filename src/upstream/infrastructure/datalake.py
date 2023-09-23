@@ -4,6 +4,7 @@ Set up the filesystem and create the necessary directories that would act as the
 
 import os
 import logging
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -32,7 +33,7 @@ def set_up_local_data_lake(root_path, bronze='bronze', silver='silver', gold='go
     logger.debug("Creating nested data folders")
     for data_dir in [bronze, silver, gold]:
         if not is_empty(root_folder / data_dir):
-            raise DataLakeError(f"expected {data_dir} to be empty")
+            logger.warning(f"expected {data_dir} to be empty")
         (root_folder / data_dir).mkdir(exist_ok=True)
     logger.info("Data Lake directories created.")
 
@@ -68,8 +69,7 @@ def load_parquet(path: str) -> pd.DataFrame:
 def export_parquet(df, path, partition_cols=None):
     """
     export_parquet takes a dataframe and writes it to the bronze directory as parquet files partitioned by date and
-    hour extracted from the timestamp column.
-
+    hour extracted from the timestamp column
     :param df: The dataframe to be exported
     :param path: Specify the directory where the parquet file will be stored
     :param partition_cols: Specify the column names by which to partition the dataset
@@ -78,5 +78,13 @@ def export_parquet(df, path, partition_cols=None):
     logger.info("Exporting table to path...")
     table = Table.from_pandas(df)
     if not is_empty(path):
-        raise DataLakeError("Provided directory is not empty.")
+        logger.warning("Provided directory is not empty.")
     pq.write_to_dataset(table, root_path=path, partition_cols=partition_cols)
+
+
+def get_filename(path: str):
+    return path.split(os.path.sep)[-1]
+
+
+def get_create_time(path: str) -> datetime:
+    return datetime.fromtimestamp(os.path.getctime(path))
