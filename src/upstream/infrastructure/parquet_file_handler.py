@@ -4,6 +4,7 @@ from datetime import datetime
 from watchdog.events import FileSystemEventHandler
 
 from upstream.infrastructure import db
+from upstream.infrastructure.sql_queries import INSERT_NEW_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -21,5 +22,9 @@ class ParquetFileHandler(FileSystemEventHandler):
             # Record the filename and timestamp in your database
             file_name = event.src_path.split("/")[-1]
             timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            db.add_file(self.stage, event.src_path, timestamp)
+            self.add_file_to_db(self.stage, event.src_path, timestamp)
             logger.debug(f"New Parquet file created: {file_name}, timestamp: {timestamp}")
+
+    def add_file_to_db(self, stage, src_path, date_created):
+        logger.debug("Adding file to database...")
+        db.execute(INSERT_NEW_FILE, stage, src_path, date_created)

@@ -32,11 +32,6 @@ class Database:
             cur = con.execute(query, tuple(query_params))
             return cur.fetchall()
 
-    def add_file(self, stage, src_path, date_created):
-        logger.debug("Adding file to database...")
-        self.execute("INSERT INTO file_monitoring (stage, src_path, timestamp) VALUES (?, ?, ?)",
-                     stage, src_path, date_created)
-
     def start_new_job(self, stage_name) -> int:
         """
         Takes the stage name as an argument and returns the id of the newly created job
