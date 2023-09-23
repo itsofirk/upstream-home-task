@@ -79,3 +79,7 @@ def export_parquet(df, path, partition_cols=None):
     if not is_empty(path):
         raise DataLakeError("Provided directory is not empty.")
     pq.write_to_dataset(table, root_path=path, partition_cols=partition_cols)
+
+
+def get_filename(path: str):
+    return path.split(os.path.sep)[-1]
