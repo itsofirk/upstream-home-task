@@ -9,7 +9,29 @@ from upstream.logic import bronze, silver, gold
 logger = logging.getLogger(AppConfig.app_name)
 
 app = Flask(AppConfig.app_name)
-file_watcher = FileWatcher(DatalakeConfig.bronze_name, DatalakeConfig.bronze_path(), DatalakeConfig.silver_name, DatalakeConfig.silver_path())
+file_watcher = FileWatcher(DatalakeConfig.bronze_name, DatalakeConfig.bronze_path(), DatalakeConfig.silver_name,
+                           DatalakeConfig.silver_path())
+
+
+@app.route('/bronze')
+def run_bronze():
+    logger.info("Running bronze stage...")
+    bronze(UpstreamConfig.url, DatalakeConfig.bronze_path(), UpstreamConfig.amount)
+    return jsonify(response="Bronze stage done!", status=200, mimetype='application/json')
+
+
+@app.route('/silver')
+def run_silver():
+    logger.info("Running silver stage...")
+    silver(DatalakeConfig.bronze_path(), DatalakeConfig.silver_path())
+    return jsonify(response="Silver stage done!", status=200, mimetype='application/json')
+
+
+@app.route('/gold')
+def run_gold():
+    logger.info("Running gold stage...")
+    gold(DatalakeConfig.silver_path(), DatalakeConfig.gold_path())
+    return jsonify(response="Gold stage done!", status=200, mimetype='application/json')
 
 
 @app.route('/process')

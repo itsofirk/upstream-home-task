@@ -4,6 +4,7 @@ Set up the filesystem and create the necessary directories that would act as the
 
 import os
 import logging
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -83,3 +84,7 @@ def export_parquet(df, path, partition_cols=None):
 
 def get_filename(path: str):
     return path.split(os.path.sep)[-1]
+
+
+def get_create_time(path: str) -> datetime:
+    return datetime.fromtimestamp(os.path.getctime(path))

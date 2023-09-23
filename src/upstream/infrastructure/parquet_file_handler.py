@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 
 from watchdog.events import FileSystemEventHandler
 
@@ -21,7 +20,7 @@ class ParquetFileHandler(FileSystemEventHandler):
         if event.src_path.endswith(".parquet"):
             # Record the filename and timestamp in your database
             file_name = datalake.get_filename(event.src_path)
-            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+            timestamp = datalake.get_create_time(event.src_path).strftime('%Y-%m-%d %H:%M:%S.%f')
             self.add_file_to_db(self.stage, event.src_path, timestamp)
             logger.debug(f"New Parquet file created: {file_name}, timestamp: {timestamp}")
 
