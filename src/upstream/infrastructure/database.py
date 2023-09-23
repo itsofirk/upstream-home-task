@@ -1,7 +1,6 @@
 import os
 import logging
 import sqlite3
-from datetime import datetime
 
 from upstream.infrastructure import sql_queries as SQL
 
