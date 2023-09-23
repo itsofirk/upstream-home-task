@@ -1,11 +1,10 @@
 import logging
-from concurrent.futures import ThreadPoolExecutor
+import threading
 
 from upstream.common.config import UpstreamConfig, DatalakeConfig
 from upstream.logic import bronze, silver, gold
 
 logger = logging.getLogger(__name__)
-executor = ThreadPoolExecutor(max_workers=3)
 
 
 def process_data():
@@ -20,4 +19,4 @@ def process_data():
 
 
 def start_concurrently():
-    executor.submit(process_data)
+    threading.Thread(target=process_data, daemon=True).start()  # daemon=True will let the processing finish peacefully
