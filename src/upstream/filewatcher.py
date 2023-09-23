@@ -1,5 +1,5 @@
 import os
-import time
+import threading
 import atexit
 import logging
 from watchdog.observers import Observer
@@ -20,17 +20,16 @@ class FileWatcher:
         self.observer.schedule(silver_event_handler, path=bronze_dir, recursive=True)
         self.observer.schedule(gold_event_handler, path=silver_dir, recursive=True)
 
+        self.thread = threading.Thread(target=self.observer.start, daemon=True)
+
         atexit.register(self.observer.stop)  # atexit will call observer.stop() when program exits
 
     def start(self):
-        try:
-            logger.info("Starting file watcher.")
-            self.observer.start()
+        logger.info("Starting file watcher.")
+        self.thread.start()
 
-            while True:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            self.observer.stop()
-            self.observer.join()
-        finally:
-            logger.info("File watcher stopped.")
+    def stop(self):
+        self.observer.stop()
+        self.observer.join()
+        logger.info("File watcher stopped.")
+
